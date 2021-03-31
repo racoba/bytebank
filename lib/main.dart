@@ -9,7 +9,7 @@ class BytebankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: FormularioTransferencia(),
+        body: ListaTransferencia(),
       ),
     );
   }
@@ -28,17 +28,17 @@ class FormularioTransferencia extends StatelessWidget {
         appBar: AppBar(title: Text('Criando Transferência')),
         body: Column(children: <Widget>[
           Editor(controlador: controladorCampoNumeroConta, rotulo: 'Numero da Conta', dica: '0000',),
-          Editor(controlador:controladorCampoValor, rotulo:'Valor',dica: '0000',icone: Icons.monetization_on)
-          
+          Editor(controlador:controladorCampoValor, rotulo:'Valor',dica: '0000',icone: Icons.monetization_on),
+
           RaisedButton(
-              onPressed: () => _criaTransferencia(),
+              onPressed: () => _criaTransferencia(context),
               child: Text(
                 'Confirmar',
               )),
         ]));
   }
 
-  void _criaTransferencia() {
+  void _criaTransferencia(BuildContext context) {
     
     final int numeroConta =
         int.tryParse(controladorCampoNumeroConta.text);
@@ -46,7 +46,9 @@ class FormularioTransferencia extends StatelessWidget {
         double.tryParse(controladorCampoValor.text);
     if (numeroConta != null && valor != null) {
       final transferenciaCriada = Transferencia(valor, numeroConta);
-      
+      debugPrint('Criando transferencia');
+      debugPrint('$transferenciaCriada');
+      Navigator.pop(context, transferenciaCriada);
     }
   }
 }
@@ -94,6 +96,15 @@ class ListaTransferencia extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        onPressed: () {
+         final Future<Transferencia> future = Navigator.push(context,MaterialPageRoute(builder: (context){
+            return FormularioTransferencia();
+          }));
+          future.then((transferenciaRecebida){
+            debugPrint('chegou no then do future');
+            debugPrint('$transferenciaRecebida');
+          });
+        },
       ),
     );
   }
