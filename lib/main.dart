@@ -92,7 +92,7 @@ class ListaTransferencia extends StatefulWidget {
   }
    
   }
-}
+
 
 
 
@@ -122,7 +122,7 @@ class ListaTransferenciasState extends State<ListaTransferencia>{
           future.then((transferenciaRecebida){
             debugPrint('chegou no then do future');
             debugPrint('$transferenciaRecebida');
-            widget._transferencias.add(transferenciaRecebida)
+            widget._transferencias.add(transferenciaRecebida);
           });
         },
       ),
